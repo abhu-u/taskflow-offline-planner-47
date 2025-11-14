@@ -1,12 +1,16 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
 export type TaskStatus = 'pending' | 'in-progress' | 'done';
+export type TaskPriority = 'low' | 'medium' | 'high';
 
 export interface Task {
   id: string;
   title: string;
   description?: string;
   status: TaskStatus;
+  priority?: TaskPriority;
+  tags?: string[];
+  notes?: string;
   dueDate?: string;
   createdAt: string;
   completedAt?: string;
@@ -30,16 +34,20 @@ let dbInstance: IDBPDatabase<TaskFlowDB> | null = null;
 export async function getDB() {
   if (dbInstance) return dbInstance;
 
-  dbInstance = await openDB<TaskFlowDB>('taskflow-db', 1, {
-    upgrade(db) {
+  dbInstance = await openDB<TaskFlowDB>('taskflow-db', 2, {
+    upgrade(db, oldVersion) {
       // Create tasks store
-      const taskStore = db.createObjectStore('tasks', { keyPath: 'id' });
-      taskStore.createIndex('by-status', 'status');
-      taskStore.createIndex('by-date', 'dueDate');
-      taskStore.createIndex('by-order', 'order');
+      if (!db.objectStoreNames.contains('tasks')) {
+        const taskStore = db.createObjectStore('tasks', { keyPath: 'id' });
+        taskStore.createIndex('by-status', 'status');
+        taskStore.createIndex('by-date', 'dueDate');
+        taskStore.createIndex('by-order', 'order');
+      }
 
       // Create settings store
-      db.createObjectStore('settings', { keyPath: 'key' });
+      if (!db.objectStoreNames.contains('settings')) {
+        db.createObjectStore('settings', { keyPath: 'key' });
+      }
     },
   });
 
