@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, CalendarDays, CalendarRange, CalendarIcon } from 'lucide-react';
+import { Calendar, CalendarDays, CalendarRange, CalendarIcon, Infinity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { DateRange } from 'react-day-picker';
 import { addDays, format } from 'date-fns';
 
-export type ViewMode = 'today' | 'week' | 'month' | 'custom';
+export type ViewMode = 'all' | 'today' | 'week' | 'month' | 'custom';
 
 interface ViewSelectorProps {
   view: ViewMode;
@@ -21,6 +21,7 @@ interface ViewSelectorProps {
 }
 
 const views = [
+  { id: 'all' as ViewMode, label: 'All Time', icon: Infinity },
   { id: 'today' as ViewMode, label: 'Today', icon: Calendar },
   { id: 'week' as ViewMode, label: 'Next 7 Days', icon: CalendarDays },
   { id: 'month' as ViewMode, label: 'Next 30 Days', icon: CalendarRange },

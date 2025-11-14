@@ -14,7 +14,7 @@ import { exportData, importData } from '@/lib/db';
 import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
-  const [view, setView] = useState<ViewMode>('today');
+  const [view, setView] = useState<ViewMode>('all');
   const [customRange, setCustomRange] = useState<DateRange | undefined>();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>();
@@ -26,6 +26,9 @@ const Index = () => {
     const now = new Date();
     
     switch (view) {
+      case 'all':
+        return tasks;
+      
       case 'today':
         return tasks.filter((task) => {
           if (!task.dueDate) return true;
