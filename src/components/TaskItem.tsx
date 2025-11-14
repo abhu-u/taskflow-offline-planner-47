@@ -90,7 +90,7 @@ export function TaskItem({ task, onUpdateStatus, onEdit, onDelete }: TaskItemPro
             {task.title}
           </h3>
           {task.description && (
-            <p className="mt-1 text-sm text-muted-foreground">{task.description}</p>
+            <p className="mt-1 text-sm text-muted-foreground whitespace-pre-wrap">{task.description}</p>
           )}
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <Badge
